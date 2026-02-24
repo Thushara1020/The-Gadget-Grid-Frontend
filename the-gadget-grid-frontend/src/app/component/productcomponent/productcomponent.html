@@ -1,0 +1,86 @@
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="bg-linear-to-br from-blue-50 via-white to-cyan-50 min-h-screen p-6 md:p-12 font-sans">
+  <div class="max-w-7xl mx-auto">
+    
+    <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+      <div>
+        <h2 class="text-4xl font-black text-blue-900 tracking-tight">Premium <span class="text-blue-600">Products</span></h2>
+        <div class="h-1.5 w-20 bg-blue-600 rounded-full mt-2"></div>
+      </div>
+      <div class="bg-blue-100/50 backdrop-blur-md px-4 py-2 rounded-2xl border border-blue-200">
+        <p class="text-blue-800 font-bold text-sm">{{products.length}} Products Available</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+      
+      <div *ngFor="let product of products" 
+           class="group relative bg-white rounded-4xl border border-blue-100 shadow-[0_10px_40px_-15px_rgba(37,99,235,0.15)] hover:shadow-[0_20px_50px_-10px_rgba(37,99,235,0.3)] transition-all duration-500 overflow-hidden">
+        
+        <div class="relative h-56 overflow-hidden bg-slate-50">
+          <div class="absolute inset-0 bg-linear-to-t from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+          
+          <img [src]="product.imageUrl" 
+               [alt]="product.productName" 
+               class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700 ease-out">
+          
+          <div class="absolute top-4 left-4 z-20">
+            <span class="bg-blue-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow-lg uppercase tracking-wider">
+              {{product.productBrand}}
+            </span>
+          </div>
+          <div class="absolute top-4 right-4 z-20">
+            <span class="bg-white/90 backdrop-blur-md text-blue-600 text-[10px] font-bold px-2 py-1 rounded-lg border border-blue-100">
+              New 2024
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+            <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Premium {{product.productBrand}}</p>
+          </div>
+
+          <h3 class="text-slate-800 font-extrabold text-xl leading-tight mb-2 group-hover:text-blue-700 transition-colors truncate">
+            {{product.productName}}
+          </h3>
+
+          <p class="text-slate-500 text-xs line-clamp-2 mb-6 font-medium leading-relaxed">
+            {{product.description}}
+          </p>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Best Price</p>
+              <p class="text-2xl font-black text-blue-900 tracking-tighter">
+                <span class="text-sm font-bold mr-0.5">Rs.</span>{{product.price | number:'1.0-0'}}
+              </p>
+            </div>
+            
+            <button class="relative overflow-hidden group/btn bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-2xl transition-all duration-300 flex items-center justify-center shadow-lg shadow-blue-200 active:scale-95">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+              </svg>
+              <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="px-6 pb-6">
+            <div class="w-full bg-blue-50 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-blue-500 h-full rounded-full" [style.width.%]="product.stockQuantity > 100 ? 100 : product.stockQuantity"></div>
+            </div>
+            <p class="text-[9px] text-blue-400 font-bold mt-2 uppercase">{{product.stockQuantity}} Units Left in Stock</p>
+        </div>
+      </div>
+      </div>
+  </div>
+</div>
+
+<style>
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+</style>
