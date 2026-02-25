@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
+  id: number;
   productName: string;
   description: string;
   category: string;
@@ -26,5 +27,8 @@ export class Productservice {
 
   login(loginData: any): Observable<any> {
   return this.http.post('http://localhost:8080/api/users/register', loginData);
+}
+addToCart(cartData: any): Observable<any> {
+    return this.http.post('http://localhost:8080/api/products/add', cartData);
 }
 }
