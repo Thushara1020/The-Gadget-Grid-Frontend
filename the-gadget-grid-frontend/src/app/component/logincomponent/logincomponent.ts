@@ -14,46 +14,58 @@ import { AuthService } from '../../service.user/userdata';
 export class Logincomponent {
   loginData = {
     username: '',
-    password: ''
+    password: '',
   };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   onLogin(form: NgForm) {
     this.authService.getAllUsers().subscribe({
       next: (users: any[]) => {
-        console.log('Database eke inna Usersla:', users);
-
-        const validUser = users.find(u => 
-          u.username === this.loginData.username && 
-          u.password === this.loginData.password
+        const validUser = users.find(
+          (u) => u.username === this.loginData.username && u.password === this.loginData.password,
         );
 
         if (validUser) {
-          console.log('Success! User match una:', validUser);
-          
-          this.clearForm(form);
-          
-          alert('Login Successful!');
-          this.router.navigate(['/']); 
+          console.log('Login Success! User matched:', validUser);
+
+          if (validUser.user_id) {
+            localStorage.setItem('userId', validUser.user_id.toString());
+          }
+
+          localStorage.setItem('userName', validUser.username);
+          localStorage.setItem('isLoggedIn', 'true');
+
+          this.router
+            .navigate(['/'])
+            .then((nav) => {
+              console.log('Navigation Status:', nav);
+              if (nav) {
+                this.clearForm(form);
+              }
+            })
+            .catch((err) => {
+              console.error('Navigation Error:', err);
+            });
         } else {
-          console.error('Login Failed: Username ho Password incorrect');
-          alert('Username or Password incorrect. Login failed!');
-          
+          alert('Username or Password incorrect!');
           this.clearForm(form);
         }
       },
       error: (err) => {
-        console.error('Backend eken data ganna bari una:', err);
-        alert('Backend error! Check your connection.');
-      }
+        console.error('Backend connection error:', err);
+        alert('Server connection failed!');
+      },
     });
   }
 
   clearForm(form: NgForm) {
     this.loginData = {
       username: '',
-      password: ''
+      password: '',
     };
     form.resetForm();
   }
