@@ -12,16 +12,14 @@ import { Product, Productservice } from '../../service.product/productservice';
 })
 export class Productcomponent implements OnInit {
   products: Product[] = [];
-  
-  addedProductsConsoleArray: any[] = []; 
-
+  addedProductsConsoleArray: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
   constructor(
     private productService: Productservice,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -56,11 +54,11 @@ export class Productcomponent implements OnInit {
       next: (data) => {
         console.log('Data received:', data);
         this.products = data;
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('API Error:', err);
-      }
+      },
     });
   }
 
@@ -68,35 +66,45 @@ export class Productcomponent implements OnInit {
     const userId = localStorage.getItem('userId');
 
     if (!userId) {
-      alert('Please login first to add products to your cart!');
+      alert('Please login first!');
       this.router.navigate(['/login']);
       return;
     }
 
+    const existingItem = this.addedProductsConsoleArray.find(
+      (item) => item.addedProductID === productId,
+    );
 
-    const cartItem = {
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      const selectedProduct = this.products.find((p) => p.productId === productId);
+
+      this.addedProductsConsoleArray.push({
+        logedUserID: userId,
+        addedProductID: productId,
+        productName: selectedProduct ? selectedProduct.productName : 'Unknown',
+        price: selectedProduct ? selectedProduct.price : 0,
+        quantity: 1,
+      });
+    }
+
+    console.log('--- Current Cart Summary ---');
+    console.table(this.addedProductsConsoleArray);
+
+    const currentItem = this.addedProductsConsoleArray.find(
+      (item) => item.addedProductID === productId,
+    );
+
+    const cartData = {
       userId: parseInt(userId),
       productId: productId,
-      quantity: 1 
+      quantity: currentItem ? currentItem.quantity : 1,
     };
-    this.addedProductsConsoleArray.push({
-      logedUserID: userId,
-      addedProductID: productId,
-      timestamp: new Date().toLocaleString()
-    });
 
-    console.log('--- Added Products Array for Console ---');
-    console.log(this.addedProductsConsoleArray);
-
-    this.productService.addToCart(cartItem).subscribe({
-      next: (res) => {
-        console.log('Added to cart successfully!', res);
-        alert('Product added to your cart! 🛒');
-      },
-      error: (err) => {
-        console.error('Error adding to cart:', err);
-        alert('Could not add to cart. Try again later.');
-      }
+    this.productService.addToCart(cartData).subscribe({
+      next: (res) => alert(`Product added! Current quantity: ${cartData.quantity} 🛒`),
+      error: (err) => console.error('Cart Error:', err),
     });
   }
 
