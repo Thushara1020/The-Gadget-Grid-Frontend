@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, TrackByFunction } from '@angular/core'; // TrackByFunction import කළා
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Product, Productservice } from '../../service.product/productservice';
@@ -13,6 +13,8 @@ import { Product, Productservice } from '../../service.product/productservice';
 export class Productcomponent implements OnInit {
   products: Product[] = [];
   
+  addedProductsConsoleArray: any[] = []; 
+
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
@@ -26,7 +28,6 @@ export class Productcomponent implements OnInit {
     this.loadProducts();
   }
 
-  // --- Pagination Logic ---
   get displayedProducts() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.products.slice(startIndex, startIndex + this.itemsPerPage);
@@ -50,7 +51,6 @@ export class Productcomponent implements OnInit {
     }
   }
 
-  // --- API Functions ---
   loadProducts() {
     this.productService.getAllProducts().subscribe({
       next: (data) => {
@@ -73,11 +73,20 @@ export class Productcomponent implements OnInit {
       return;
     }
 
+
     const cartItem = {
       userId: parseInt(userId),
       productId: productId,
       quantity: 1 
     };
+    this.addedProductsConsoleArray.push({
+      logedUserID: userId,
+      addedProductID: productId,
+      timestamp: new Date().toLocaleString()
+    });
+
+    console.log('--- Added Products Array for Console ---');
+    console.log(this.addedProductsConsoleArray);
 
     this.productService.addToCart(cartItem).subscribe({
       next: (res) => {
