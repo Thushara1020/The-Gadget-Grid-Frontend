@@ -76,28 +76,14 @@
             </div>
 
             <button
-              (click)="addToCart(product.id)"
-              class="relative overflow-hidden group/btn bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-2xl transition-all duration-300 flex items-center justify-center shadow-lg shadow-blue-200 active:scale-95"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 z-10"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2.5"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-
-              <div
-                class="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"
-              ></div>
-            </button>
+  (click)="addToCart(product.productId)"
+  class="relative overflow-hidden group/btn bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-2xl transition-all duration-300 flex items-center justify-center shadow-lg shadow-blue-200 active:scale-95"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+  </svg>
+  <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"></div>
+</button>
           </div>
         </div>
 
