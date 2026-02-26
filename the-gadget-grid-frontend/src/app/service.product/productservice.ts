@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
-  id: number;
+  productId: number;    // අනිවාර්යයෙන්ම 'id' වෙනුවට 'productId' ලෙස ලියන්න
   productName: string;
   description: string;
   category: string;
