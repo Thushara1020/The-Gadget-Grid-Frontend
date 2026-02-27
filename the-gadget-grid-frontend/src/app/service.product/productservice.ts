@@ -48,4 +48,11 @@ export class Productservice {
   getCartItems() {
     return this.cartDataList;
   }
+  placeOrder(orderData: any): Observable<any> {
+  return this.http.post('http://localhost:8080/api/orders/place', orderData);
+}
+// Productservice.ts එකේ
+getOrdersByUserId(userId: number): Observable<any[]> {
+  return this.http.get<any[]>(`http://localhost:8080/api/orders/user/${userId}`);
+}
 }
