@@ -4,6 +4,8 @@ import { Logincomponent } from './component/logincomponent/logincomponent';
 import { Createaccountcomponent } from './component/createaccountcomponent/createaccountcomponent';
 import { Cardcomponent } from './component/cardcomponent/cardcomponent';
 import { Pradctpage } from './page/pradctpage/pradctpage';
+import { Ordercomponent } from './component/ordercomponent/ordercomponent';
+import { Orderpage } from './page/orderpage/orderpage';
 
 export const routes: Routes = [
     {
@@ -25,5 +27,9 @@ export const routes: Routes = [
     {
         path:'productpage',
         component: Pradctpage
+    },
+    {
+        path:'orders',
+        component: Orderpage
     }
 ];
