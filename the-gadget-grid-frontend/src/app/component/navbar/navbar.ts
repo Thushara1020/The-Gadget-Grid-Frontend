@@ -19,7 +19,9 @@ export class Navbar implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('userId') !== null;
+    const userId = localStorage.getItem('userId');
+    console.log("User ID in Navbar:", userId);
+    return userId !== null;
   }
 
   onLogout() {
