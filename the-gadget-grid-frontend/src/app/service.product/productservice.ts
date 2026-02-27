@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
-  productId: number;    // අනිවාර්යයෙන්ම 'id' වෙනුවට 'productId' ලෙස ලියන්න
+  productId: number;
   productName: string;
   description: string;
   category: string;
@@ -18,17 +18,34 @@ export interface Product {
 })
 export class Productservice {
   private apiUrl = 'http://localhost:8080/api/products/all';
+  
+  cartDataList: any[] = []; 
 
   constructor(private http: HttpClient) {}
+
 
   getAllProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
   login(loginData: any): Observable<any> {
-  return this.http.post('http://localhost:8080/api/users/register', loginData);
-}
-addToCart(cartData: any): Observable<any> {
-    return this.http.post('http://localhost:8080/api/products/add', cartData);
-}
+    return this.http.post('http://localhost:8080/api/users/register', loginData);
+  }
+
+  addToCart(cartData: any): Observable<any> {
+    return this.http.post('http://localhost:8080/api/cart/add', cartData);
+  }
+
+  addBulkToCart(cartItems: any[]): Observable<any> {
+    return this.http.post('http://localhost:8080/api/cart/add-bulk', cartItems);
+  }
+
+
+  updateCart(data: any[]) {
+    this.cartDataList = data;
+  }
+
+  getCartItems() {
+    return this.cartDataList;
+  }
 }
