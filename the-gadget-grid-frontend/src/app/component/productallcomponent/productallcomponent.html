@@ -1,0 +1,87 @@
+<div class="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 py-5 mb-0 shadow-sm">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex items-center gap-6 overflow-x-auto no-scrollbar scroll-smooth">
+      <div class="flex items-center gap-2 pr-4 border-r border-slate-200">
+        <div class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+        <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">Categories</span>
+      </div>
+      
+      <button 
+        *ngFor="let cat of categories"
+        (click)="scrollToCategory(cat)"
+        class="px-6 py-2 rounded-2xl text-slate-600 text-sm font-extrabold transition-all whitespace-nowrap hover:bg-slate-100 hover:text-blue-600 border border-transparent hover:border-slate-200"
+      >
+        {{ cat }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="min-h-screen bg-[#FBFBFB] py-16 px-6 font-sans">
+  <div class="max-w-7xl mx-auto">
+    
+    <div class="mb-20 text-center md:text-left">
+      <h1 class="text-5xl font-black text-slate-900 tracking-tighter mb-4">
+        Premium <span class="text-blue-600">Store</span>
+      </h1>
+      <p class="text-slate-400 font-medium">Select the best technology for your lifestyle.</p>
+    </div>
+
+    <div *ngFor="let cat of categories" [id]="cat" class="mb-32 scroll-mt-28">
+      
+      <div class="flex flex-col mb-12">
+        <div class="flex items-center gap-4">
+          <h2 class="text-4xl font-black text-slate-900 tracking-tighter">{{ cat }}</h2>
+          <span class="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-lg border border-blue-100 uppercase tracking-widest">
+            {{ getProductCount(cat) }} Items
+          </span>
+        </div>
+        <div class="h-1.5 w-20 bg-blue-600 rounded-full mt-3"></div>
+      </div>
+
+      <div *ngFor="let brand of getBrands(cat)" class="mb-16">
+        
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-8 h-px bg-slate-300"></div>
+          <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.4em]">{{ brand }}</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div *ngFor="let product of groupedData[cat][brand]" 
+               class="group relative bg-white rounded-[2.5rem] p-8 transition-all duration-500 hover:shadow-2xl border border-slate-100/60 flex flex-col hover:-translate-y-2">
+            
+            <div class="relative overflow-hidden rounded-3xl bg-slate-50 h-52 mb-8 flex items-center justify-center p-4">
+              <img [src]="product.imageUrl" 
+                   class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
+            </div>
+
+            <div class="flex flex-col grow">
+              <h4 class="font-extrabold text-slate-800 text-xl mb-2 tracking-tight truncate leading-tight">
+                {{ product.productName }}
+              </h4>
+              <p class="text-slate-400 text-sm font-medium mb-8 line-clamp-2">
+                {{ product.description }}
+              </p>
+              
+              <div class="flex items-center justify-between mt-auto pt-6 border-t border-slate-50">
+                <div class="flex flex-col">
+                  <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Price</span>
+                  <span class="text-2xl font-black text-slate-900 tracking-tighter">
+                    <span class="text-sm font-bold text-blue-600 mr-0.5">Rs.</span>{{ product.price | number }}
+                  </span>
+                </div>
+                
+                <button (click)="addToCart(product.productId)" 
+                        class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center transition-all duration-300 hover:bg-blue-600 hover:rounded-3xl active:scale-90 shadow-xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div> 
+    </div> 
+  </div>
+</div>
