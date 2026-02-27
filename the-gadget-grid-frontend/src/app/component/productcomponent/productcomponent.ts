@@ -62,51 +62,56 @@ export class Productcomponent implements OnInit {
     });
   }
 
-  addToCart(productId: number) {
-    const userId = localStorage.getItem('userId');
+addToCart(productId: number) {
+  const userId = localStorage.getItem('userId');
 
-    if (!userId) {
-      alert('Please login first!');
-      this.router.navigate(['/login']);
-      return;
-    }
+  if (!userId) {
+    alert('Please login first!');
+    this.router.navigate(['/login']);
+    return;
+  }
 
-    const existingItem = this.addedProductsConsoleArray.find(
-      (item) => item.addedProductID === productId,
-    );
+  const existingItem = this.addedProductsConsoleArray.find(
+    (item) => item.addedProductID === productId,
+  );
 
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      const selectedProduct = this.products.find((p) => p.productId === productId);
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    const selectedProduct = this.products.find((p) => p.productId === productId);
 
-      this.addedProductsConsoleArray.push({
-        logedUserID: userId,
-        addedProductID: productId,
-        productName: selectedProduct ? selectedProduct.productName : 'Unknown',
-        price: selectedProduct ? selectedProduct.price : 0,
-        quantity: 1,
-      });
-    }
-
-    console.log('--- Current Cart Summary ---');
-    console.table(this.addedProductsConsoleArray);
-
-    const currentItem = this.addedProductsConsoleArray.find(
-      (item) => item.addedProductID === productId,
-    );
-
-    const cartData = {
-      userId: parseInt(userId),
-      productId: productId,
-      quantity: currentItem ? currentItem.quantity : 1,
-    };
-
-    this.productService.addToCart(cartData).subscribe({
-      next: (res) => alert(`Product added! Current quantity: ${cartData.quantity} 🛒`),
-      error: (err) => console.error('Cart Error:', err),
+    this.addedProductsConsoleArray.push({
+      logedUserID: userId,
+      addedProductID: productId,
+      productName: selectedProduct ? selectedProduct.productName : 'Unknown',
+      price: selectedProduct ? selectedProduct.price : 0,
+      quantity: 1,
     });
   }
+
+  this.productService.updateCart(this.addedProductsConsoleArray);
+
+  console.log('--- Current Cart Summary ---');
+  console.table(this.addedProductsConsoleArray);
+
+  const currentItem = this.addedProductsConsoleArray.find(
+    (item) => item.addedProductID === productId,
+  );
+
+  const cartData = {
+    userId: parseInt(userId),
+    productId: productId,
+    quantity: currentItem ? currentItem.quantity : 1,
+  };
+
+  this.productService.addToCart(cartData).subscribe({
+    next: (res) => {
+      console.log('Backend Updated:', res);
+      alert(`Product added! Current quantity: ${cartData.quantity} 🛒`);
+    },
+    error: (err) => console.error('Cart Error:', err),
+  });
+}
 
   trackByProductName(index: number, product: Product): string {
     return product.productName;
